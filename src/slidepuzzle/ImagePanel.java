@@ -49,7 +49,6 @@ public class ImagePanel extends JPanel {
 				buttons[loc].setPreferredSize(new Dimension(sWidth/3, sHeight/3));
 				buttons[loc].setMargin(new Insets(0,0,0,0));
 				buttons[loc].addActionListener(gamelisten);
-//				buttons[seed[loc]].setActionCommand(String.valueOf(loc));
 				loc++;
 			}
 		}
@@ -95,8 +94,11 @@ public class ImagePanel extends JPanel {
 			buttons[seed[Integer.valueOf(ae.getActionCommand())-1]] 
 					= buttons[seed[Integer.valueOf(ae.getActionCommand())]];
 			buttons[seed[Integer.valueOf(ae.getActionCommand())]] = btntemp;
+			for(JButton s:buttons){
+				remove(s);
+				add(s);
+			}
 			validate();
-			
 		}
 		
 	}
