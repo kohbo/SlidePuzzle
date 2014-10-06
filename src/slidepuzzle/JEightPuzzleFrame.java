@@ -101,7 +101,7 @@ public class JEightPuzzleFrame extends JFrame {
 	 */
 	private void resetGame() {
 		remove(game);
-		game = new ImagePanel(bf,(int)(Math.random()*8));
+		game = new ImagePanel(bf,(int)(Math.random()*8),(int)(Math.random()*8));
 		add(game);
 		pack();
 		validate();
