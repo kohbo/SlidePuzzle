@@ -94,9 +94,9 @@ public class ImagePanel extends JPanel {
 			buttons[seed[Integer.valueOf(ae.getActionCommand())-1]] 
 					= buttons[seed[Integer.valueOf(ae.getActionCommand())]];
 			buttons[seed[Integer.valueOf(ae.getActionCommand())]] = btntemp;
-			for(JButton s:buttons){
-				remove(s);
-				add(s);
+			for(int x=0; x<buttons.length;x++){
+				remove(buttons[seed[x]]);
+				add(buttons[seed[x]]);
 			}
 			validate();
 		}
