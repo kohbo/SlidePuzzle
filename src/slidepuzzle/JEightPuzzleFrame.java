@@ -17,6 +17,17 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+/**
+ * Main Application Window
+ * This class builds the JFrame, adds the menu bar, and adds
+ * the game window. The inner class acts as a listener for the menu, 
+ * while the panel itself handles all game logic originating from 
+ * the puzzle.
+ * 
+ * Expands on the assignment and adds the ability to quickly change
+ * the source image. Plan was also to add a popup panel that could
+ * should the original source image for help, but I felt it was too much.
+ */
 @SuppressWarnings("serial")
 public class JEightPuzzleFrame extends JFrame {
 	Insets inset;
@@ -33,19 +44,17 @@ public class JEightPuzzleFrame extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		jmb = new JMenuBar();
-		reset = new JMenu("Reset");
+		reset = new JMenu("Options");
 		reset.addActionListener(menulistener);
 		resetgame = new JMenuItem("Reset This Game");
 		resetgame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_MASK));
+		//added the accelerator just to test it out, left it in because it seemed useful
 		resetgame.addActionListener(menulistener);
 		reset.add(resetgame);
 		change = new JMenuItem("Change Image");
 		change.addActionListener(menulistener);
 		reset.add(change);
 		jmb.add(reset);
-		close = new JMenuItem("Exit");
-		close.addActionListener(menulistener);
-		jmb.add(close);
 		setJMenuBar(jmb);
 		
 		try{
@@ -56,7 +65,7 @@ public class JEightPuzzleFrame extends JFrame {
 		game = new ImagePanel(bf);
 		add(game);
 		
-		//Ensures Frame has enough space to hold all components 
+		//Ensures Frame has enough space to hold all components, including borders
 		pack();
 		inset = getInsets();
 		setSize(inset.left + inset.right + bf.getWidth(), 
@@ -75,36 +84,25 @@ public class JEightPuzzleFrame extends JFrame {
 			System.out.println(event.getActionCommand());
 			switch(event.getActionCommand()){
 				case "Reset This Game":
-					resetGame();
+					game.resetGame();
 					break;
 				case "Change Image":
 					JFileChooser choose = new JFileChooser();
 					if(choose.showOpenDialog(getRootPane()) == JFileChooser.APPROVE_OPTION){
 						try{
 							bf = ImageIO.read(choose.getSelectedFile());
-							resetGame();
+							remove(game);
+							game = new ImagePanel(bf,(int)(Math.random()*2),(int)(Math.random()*2));
+							add(game);
+							pack();
+							validate();
 						}catch(IOException e){
 							JOptionPane.showMessageDialog(getRootPane(), "Image File Not found");
 						}
 					}
 					break;
-				case "Exit":
-					System.exit(0);
-					break;
 			}
 		}
 		
 	}
-	
-	/**
-	 * Resets the game with a random empty box.
-	 */
-	private void resetGame() {
-		remove(game);
-		game = new ImagePanel(bf,(int)(Math.random()*8),(int)(Math.random()*8));
-		add(game);
-		pack();
-		validate();
-	}
-
 }
